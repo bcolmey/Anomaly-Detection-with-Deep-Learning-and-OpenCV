@@ -33,10 +33,10 @@ python main.py --object_choice tile --threshold 0.004 --preprocess --train_model
 To obtain the following result for tile run the following commands: python main.py --object_choice tile  --threshold 0.0246961 --model_dir 'path/anomaly_detection_code/saved_models/'
 
 ## Model result on tile dataset:
-<img src="https://github.com/bcolmey/Anomaly-Detection-with-Deep-Learning-and-OpenCV/blob/main/images/Tile_report.jpg" width="430" height="250">
+<img src="https://github.com/bcolmey/Anomaly-Detection-with-Deep-Learning-and-OpenCV/blob/main/images/Tile_report.jpg" width="480" height="250">
 
 ## Model result on leather dataset:
-<img src="https://github.com/bcolmey/Anomaly-Detection-with-Deep-Learning-and-OpenCV/blob/main/images/Leather_report.jpg" width="430" height="250">
+<img src="https://github.com/bcolmey/Anomaly-Detection-with-Deep-Learning-and-OpenCV/blob/main/images/Leather_report.jpg" width="480" height="250">
 
 
 Given these results we see the leather model displays exceptional precision (0.9610) and recall (0.9367) for anomalies, suggesting it is highly accurate in detecting true anomalies and avoiding misclassification. The F1 score of 0.9487 for anomalies reflects excellent model accuracy and balance. The recall for non-anomalies is also high (0.9062), indicating the model reliably recognizes normal instances. The overall accuracy of 0.9279 points to the model's strong general performance. Meanwhile
