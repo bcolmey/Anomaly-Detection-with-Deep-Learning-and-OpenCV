@@ -30,11 +30,12 @@ Example Command:
 python main.py --object_choice tile --threshold 0.004 --preprocess --train_model --plot_reconstructions --grid_size 8 --model_dir ./models
 
 
-To obtain the following result for tile run the following commands: python main.py --object_choice tile  --threshold 0.0246961 --model_dir 'path/anomaly_detection_code/saved_models/'
+To obtain the following result for tile dataset run the following commands: python main.py --object_choice tile --preprocess  --threshold 0.0246961 --model_dir 'path/anomaly_detection_code/saved_models/'
 
 ## Model result on tile dataset:
 <img src="https://github.com/bcolmey/Anomaly-Detection-with-Deep-Learning-and-OpenCV/blob/main/images/Tile_report.jpg" width="480" height="250">
 
+To obtain the following result for leather dataset run the following commands: python main.py --object_choice leather --threshold 0.047800 --model_dir 'path/anomaly_detection_code/saved_models/'
 ## Model result on leather dataset:
 <img src="https://github.com/bcolmey/Anomaly-Detection-with-Deep-Learning-and-OpenCV/blob/main/images/Leather_report.jpg" width="480" height="250">
 
