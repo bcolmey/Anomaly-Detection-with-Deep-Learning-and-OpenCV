@@ -195,23 +195,41 @@ def plot_worst_reconstructions_for_single_image(autoencoder, base_image_path, de
         ax2.axis('off')
     plt.show()
 
+
 def print_classification_report(TP, FP, TN, FN, precision, recall, f1_score, accuracy):
+    # Calculate metrics for the NOT ANOMALY class with division by zero checks
+    not_anomaly_precision = TN / (TN + FN) if TN + FN > 0 else 0
+    not_anomaly_recall = TN / (TN + FP) if TN + FP > 0 else 0
+    not_anomaly_f1 = 2 * not_anomaly_precision * not_anomaly_recall / (not_anomaly_precision + not_anomaly_recall) if not_anomaly_precision + not_anomaly_recall > 0 else 0
+
     # Header for the table
-    header = f"{'':<17} {'Precision':<10} {'Recall':<10} {'F1-Score':<10} {'Support':<10}"
-    divider = "-" * len(header)
+    header = f"{'Class':<17} {'Precision':<10} {'Recall':<10} {'F1-Score':<10} {'Support':<10}"
+    divider = "-" * 55
     
     # Rows for the table
     anomaly_row = f"{'ANOMALY':<17} {precision:<10.4f} {recall:<10.4f} {f1_score:<10.4f} {TP + FN:<10}"
-    not_anomaly_row = f"{'NOT ANOMALY':<17} {(TN / (TN + FN)):<10.4f} {(TN / (TN + FP)):<10.4f} {(2 * ((TN / (TN + FN)) * (TN / (TN + FP))) / ((TN / (TN + FN)) + (TN / (TN + FP)))):<10.4f} {TN + FP:<10}"
-    accuracy_row = f"{'Accuracy':<17} {'':<10} {'':<10} {accuracy:<10.4f} {TP + FP + TN + FN:<10}"
-    macro_avg_row = f"{'Macro Avg':<17} {((precision + (TN / (TN + FN)))/2):<10.4f} {((recall + (TN / (TN + FP)))/2):<10.4f} {((f1_score + (2 * ((TN / (TN + FN)) * (TN / (TN + FP))) / ((TN / (TN + FN)) + (TN / (TN + FP)))))/2):<10.4f} {TP + FP + TN + FN:<10}"
-    weighted_avg_row = f"{'Weighted Avg':<17} {((TP * precision) + (TN * (TN / (TN + FN))))/(TP + TN):<10.4f} {((TP * recall) + (TN * (TN / (TN + FP))))/(TP + TN):<10.4f} {((TP * f1_score) + (TN * (2 * ((TN / (TN + FN)) * (TN / (TN + FP))) / ((TN / (TN + FN)) + (TN / (TN + FP))))))/(TP + TN):<10.4f} {TP + FP + TN + FN:<10}"
+    not_anomaly_row = f"{'NOT ANOMALY':<17} {not_anomaly_precision:<10.4f} {not_anomaly_recall:<10.4f} {not_anomaly_f1:<10.4f} {TN + FP:<10}"
+    
+    # Calculating Macro Avg and Weighted Avg with checks
+    macro_precision = (precision + not_anomaly_precision) / 2
+    macro_recall = (recall + not_anomaly_recall) / 2
+    macro_f1 = (f1_score + not_anomaly_f1) / 2
+
+    total_support = TP + FP + TN + FN
+    weighted_precision = ((TP * precision) + (TN * not_anomaly_precision)) / total_support if total_support > 0 else 0
+    weighted_recall = ((TP * recall) + (TN * not_anomaly_recall)) / total_support if total_support > 0 else 0
+    weighted_f1 = ((TP * f1_score) + (TN * not_anomaly_f1)) / total_support if total_support > 0 else 0
+
+    accuracy_row = f"{'Accuracy':<17} {'-':<10} {'-':<10} {accuracy:<10.4f} {total_support:<10}"
+    macro_avg_row = f"{'Macro Avg':<17} {macro_precision:<10.4f} {macro_recall:<10.4f} {macro_f1:<10.4f} {total_support:<10}"
+    weighted_avg_row = f"{'Weighted Avg':<17} {weighted_precision:<10.4f} {weighted_recall:<10.4f} {weighted_f1:<10.4f} {total_support:<10}"
 
     # Combine the rows into a single string
     report = f"\n{header}\n{divider}\n{anomaly_row}\n{not_anomaly_row}\n{divider}\n{accuracy_row}\n{macro_avg_row}\n{weighted_avg_row}\n{divider}\n"
 
     # Print the report
     print(report)
+
 
 
 def generate_classification_report(df):
